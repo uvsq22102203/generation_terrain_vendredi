@@ -28,7 +28,8 @@ P = 0.5
 
 
 
-
+terrain = []
+grille = []
 
 #######################
 # fonctions
@@ -40,9 +41,8 @@ def init_terrain():
     * initialise la liste grille à 2D qui contient l'identifiant
     du carré dessiné sur le canevas pour chaque case 
     """
-    terrain = []
-    grille = []
-    global grille, terrain
+    
+    global terrain, grille
     for i in range (N):
         terrain.append([0]*N)
         grille.append([0]*N)
