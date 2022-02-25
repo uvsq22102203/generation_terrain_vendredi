@@ -43,6 +43,9 @@ def init_terrain():
     """
     
     global terrain, grille
+    grille = []
+    terrain = []
+    canvas.delete()
     for i in range (N):
         terrain.append([0]*N)
         grille.append([0]*N)
@@ -66,6 +69,45 @@ def init_terrain():
     print(terrain)
     
 
+def sauvegarde():
+    """ecrit la valeur N et la variable terrain 
+    dans le fichier sauvegarde.txt
+    """
+    fic = open("sauvegarde.txt","w")
+    fic.write(str(N) + "\n")
+    for i in range(N):
+        for j in range(N):
+            fic.write(str(terrain[i][j] + "\n"))
+    fic.close()
+
+
+def load():
+    """lit le fichier sauvegarde.txt et met a jour les variables 
+    N et terrain en consequence, et modifier l'affichage
+    """
+    global N
+    fic = open("sauvegarde.txt", "w")
+    ligne = fic.readline()
+    N = int(ligne)
+    init_terrain()
+    i = j = 0
+    for ligne in fic:
+        n = int(ligne)
+        terrain[i][j] = n
+        j += 1
+        if j == N:
+            j = 0
+            i += 1
+    fic.close()
+    print(terrain)
+    for i in range(N):
+        for j in range(N):
+            if terrain [i][j] == 1:
+                coul = COUL_MUR
+            else:
+                coul = COUL_VIDE
+            canvas.itemconfigure(grille[i][j], fill = coul)
+
 
 
 #######################
@@ -75,9 +117,13 @@ def init_terrain():
 racine = tk.Tk()
 racine.title("Génération de terrain")
 canvas = tk.Canvas(racine, width=LARGEUR, height=HAUTEUR, bg="blue")
+bouton_sauv = tk.Button(racine, text ="sauvegarde", command=sauvegarde)
+bouton_load = tk.Button(racine, text="changer terrain", command=load)
 
 # placement des widgets
-canvas.grid(column=0, row=0)
+canvas.grid(column=0, row=0, rowspan= 10)
+bouton_sauv.grip(row=0)
+bouton_load.grip(row=1)
 
 init_terrain()
 
